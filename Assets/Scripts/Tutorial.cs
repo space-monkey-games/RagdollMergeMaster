@@ -7,6 +7,7 @@ public class Tutorial : MonoBehaviour
 {
     public Button startFight;
     public Button addArrowman;
+    public Button addMan;
     public Animator animator;
     private int anima = -1;
 
@@ -16,19 +17,22 @@ public class Tutorial : MonoBehaviour
         {
             startFight.interactable = false;
             addArrowman.interactable = false;
+            addMan.onClick.AddListener(NextStep);
+            startFight.onClick.AddListener(NextStep);
         }
         else
             Destroy(gameObject);
             
     }
 
+    public void NextStep ()
+    {
+        anima++;
+        animator.SetInteger("anima", anima);
+    }
+
     public void Update ()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            anima++;
-            animator.SetInteger("anima", anima);
-        }
         if (anima >= 2)
         {
             startFight.interactable = true;

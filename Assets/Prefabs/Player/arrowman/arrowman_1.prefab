@@ -2263,7 +2263,7 @@ Transform:
   m_GameObject: {fileID: 121767196869322519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18.51, y: -0.15180063, z: 38.16}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 121767195731717651}
   - {fileID: 121767196969100876}
@@ -2962,6 +2962,7 @@ GameObject:
   m_Component:
   - component: {fileID: 121767197383777828}
   - component: {fileID: 121767197383777829}
+  - component: {fileID: 5318851900239017506}
   m_Layer: 0
   m_Name: Pers
   m_TagString: Untagged
@@ -3057,6 +3058,24 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.002534151, y: -0.19714367, z: 0.01324752}
     m_Extent: {x: 2.4453835, y: 2.5026731, z: 0.6740546}
   m_DirtyAABB: 0
+--- !u!114 &5318851900239017506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121767197383777819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &121767197497032065
 GameObject:
   m_ObjectHideFlags: 0

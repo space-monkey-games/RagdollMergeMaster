@@ -4,13 +4,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MySceneManager : MonoBehaviour
+public class MySceneManager : MonoBehaviour 
 {
     public Text currentLevelText;
     public bool isEditMode = false;
 
-    private void Awake()
+    private void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            SceneManager.LoadScene(1);
+            return;
+        }
+
         currentLevelText.text = "LEVEL " + GetLevel().ToString();
         SaveAndLoad gameSave = GetComponent<SaveAndLoad>();        
         gameSave.fileName = GetLevel().ToString();

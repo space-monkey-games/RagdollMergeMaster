@@ -5,7 +5,7 @@ using System;
 using RootMotion.Dynamics;
 
 [Serializable]
-public enum TypeMan
+public enum TypeMan 
     {
         man,
         arrowman

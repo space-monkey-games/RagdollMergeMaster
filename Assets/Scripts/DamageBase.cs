@@ -22,8 +22,8 @@ public class DamageParams
 
 
 public class DamageBase : MonoBehaviour
-{
-    public DamageBase target;
+{ 
+    public DamageBase target; 
 
     public Transform weapon;
     public GameObject projectilePrefab;
@@ -40,7 +40,7 @@ public class DamageBase : MonoBehaviour
     public float forceForRB = 1000;
     public float forceForMove = 10f;
     public float attackRate = 1f;
-    public Rigidbody[] rigidbodyForForce = new Rigidbody[0];
+    public Rigidbody[] rigidbodyForForce = new Rigidbody[0]; 
     private Animator animator;
     public AudioClip damageAudioClip;
     private Controller _controller;

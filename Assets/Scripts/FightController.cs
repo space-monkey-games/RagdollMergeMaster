@@ -4,11 +4,12 @@ using UnityEngine;
 using Cinemachine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 [Serializable]
 public class Bot
 {
-    public DamageBase damageBase;
+    public DamageBase damageBase; 
     public Image hpImage;
     public Transform hpTransform;
     public float offcet;
@@ -25,6 +26,8 @@ public class Bot
     }
 }
 
+[Serializable]
+public class MyUnityEventClass : UnityEvent<int, string> { }
 
 public class FightController : MonoBehaviour
 {
@@ -44,9 +47,15 @@ public class FightController : MonoBehaviour
     public Text youEarned;
     private Camera _myCamera;
 
+    public static MyUnityEventClass levelStartEvent = new MyUnityEventClass();
+    public static MyUnityEventClass levelWinEvent = new MyUnityEventClass();
+    public static MyUnityEventClass levelFailEvent = new MyUnityEventClass();
+
     private void Start()
     {
         _myCamera = Camera.main;
+        if (levelStartEvent != null)
+            levelStartEvent.Invoke(MySceneManager.GetLevel(), "");
     }
 
 
@@ -171,12 +180,16 @@ public class FightController : MonoBehaviour
 
     void Winner ()
     {
-        //finishCamera.Priority = 100;
+        if (levelWinEvent != null)
+            levelWinEvent.Invoke(MySceneManager.GetLevel(), "");
+
         MySceneManager.AddNextLevel();
         moneyPerLevel = (int)(Math.Max(MySceneManager.GetArrowmanCount(), MySceneManager.GetManCount()) * 2f);
         MySceneManager.AddMoney(moneyPerLevel);
         StartCoroutine(YouEarned(true));
         GetComponent<AudioSource>().PlayOneShot(finishAudioClip);
+
+        
     }
 
     void Failed ()
@@ -186,6 +199,9 @@ public class FightController : MonoBehaviour
         //moneyPerLevel = Math.Max(moneyPerLevel, minCount);
         MySceneManager.AddMoney(moneyPerLevel);
         StartCoroutine(YouEarned(false));
+
+        if (levelFailEvent != null)
+            levelFailEvent.Invoke(MySceneManager.GetLevel(), "");
     }
 
     IEnumerator YouEarned (bool win)
