@@ -631,6 +631,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
+    1: MOREMOUNTAINS_NICEVIBRATIONS
     4: gameanalytics_max_enabled
     7: MOREMOUNTAINS_NICEVIBRATIONS;gameanalytics_max_enabled
   additionalCompilerArguments: {}
