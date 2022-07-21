@@ -45,9 +45,10 @@ public class Lineup : MonoBehaviour
         _audioSource = FindObjectOfType<AudioSource>();
     }
 
-    /*public bool merge = true;
+    public bool merge = true;
      int lvl = 0;
     public List<GameObject> merges = new List<GameObject>();
+
     void Update()
     {
         if (merge)
@@ -55,20 +56,20 @@ public class Lineup : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 _startCell = CheckCell(RaycastPosition(Input.mousePosition));
-                _target = CheckTarget(_startCell);                
+                _target = CheckTarget(_startCell);
                 if (_target == null)
                     return;
                 merges.Add(_target.root.gameObject);
                 lvl++;
                 Outline outline = _target.GetComponentInChildren<Outline>();
                 outline.OutlineColor = Color.green;
-                outline.OutlineWidth = 10;
+                outline.OutlineWidth = 8;
                 _target.localScale = _target.localScale + _target.localScale * .1f;
 
             }
             if (Input.GetMouseButtonDown(1))
             {
-                InstantiateLevelMan(TypeMan.man, lvl, merges[2].transform.position, true);
+                InstantiateLevelMan(TypeMan.man, merges.Count - 1, merges[merges.Count-1].transform.position, true);
                 foreach (GameObject go in merges)
                     Destroy(go);
                 lvl = 0;
@@ -76,28 +77,28 @@ public class Lineup : MonoBehaviour
             }
             return;
         }
-*/
-    void Update ()
-    {
-        if (Input.GetMouseButtonDown(0))
+        else
         {
-            _startCell = CheckCell(RaycastPosition(Input.mousePosition));
-            _target = CheckTarget(_startCell);
-            if (_target == null)
-                return;
-            _target.gameObject.layer = 0;
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                _startCell = CheckCell(RaycastPosition(Input.mousePosition));
+                _target = CheckTarget(_startCell);
+                if (_target == null)
+                    return;
+                _target.gameObject.layer = 0;
+            }
 
-        if (Input.GetMouseButton(0) && _target != null)
-        {
-            Vector3 newPos = RaycastPosition(Input.mousePosition);
-            _target.position = newPos;            
-        }
-        if (Input.GetMouseButtonUp(0) && _target != null)
-        {
-            _currentCell = CheckCell(RaycastPosition(Input.mousePosition));
-            _currentCell = ClampCell(_currentCell);
-            SetPositionOnCell();
+            if (Input.GetMouseButton(0) && _target != null)
+            {
+                Vector3 newPos = RaycastPosition(Input.mousePosition);
+                _target.position = newPos;
+            }
+            if (Input.GetMouseButtonUp(0) && _target != null)
+            {
+                _currentCell = CheckCell(RaycastPosition(Input.mousePosition));
+                _currentCell = ClampCell(_currentCell);
+                SetPositionOnCell();
+            }
         }
     }
 

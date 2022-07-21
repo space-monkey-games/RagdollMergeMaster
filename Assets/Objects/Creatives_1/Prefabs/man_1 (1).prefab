@@ -312,6 +312,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beab08ff0320f9c47b19170d421fe8ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6606356791105254251}
+        m_TargetAssemblyTypeName: DamageBase, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   dmg: {fileID: 6606356791105254251}
 --- !u!1 &2945512285283232021
 GameObject:
@@ -4317,6 +4332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7619692877918678528}
   - component: {fileID: 9211528482462053038}
+  - component: {fileID: 4711586591964291267}
   m_Layer: 0
   m_Name: LVL_1
   m_TagString: Untagged
@@ -4415,6 +4431,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.063820004, y: -0.18169451, z: 0.17000501}
     m_Extent: {x: 1.1123356, y: 2.5384908, z: 0.6410758}
   m_DirtyAABB: 0
+--- !u!114 &4711586591964291267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8876336315108679068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &6606356790409457936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4496,14 +4530,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73b2ceb8693b61c4594e59ab7f7e7fc9, type: 3}
---- !u!4 &6606356790409911784 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 470264, guid: 73b2ceb8693b61c4594e59ab7f7e7fc9, type: 3}
-  m_PrefabInstance: {fileID: 6606356790409457936}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &6606356790394705660 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 19867628, guid: 73b2ceb8693b61c4594e59ab7f7e7fc9, type: 3}
+  m_PrefabInstance: {fileID: 6606356790409457936}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6606356790409911784 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 470264, guid: 73b2ceb8693b61c4594e59ab7f7e7fc9, type: 3}
   m_PrefabInstance: {fileID: 6606356790409457936}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7728863624312485538

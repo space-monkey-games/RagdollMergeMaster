@@ -194,7 +194,7 @@ public class DamageBase : MonoBehaviour
         }
     }
 
-    void Dead ()
+    public void Dead ()
     {
         hp = 0;
         animator.SetTrigger("dead");

@@ -159,6 +159,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beab08ff0320f9c47b19170d421fe8ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8495579022750063934}
+        m_TargetAssemblyTypeName: DamageBase, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   dmg: {fileID: 8495579022750063934}
 --- !u!1 &752629192313003962
 GameObject:
@@ -686,6 +701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5814341084279169393}
   - component: {fileID: 3612203319125074468}
+  - component: {fileID: 4228716428584776696}
   m_Layer: 0
   m_Name: LVL_3
   m_TagString: Untagged
@@ -784,6 +800,24 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.045903802, y: -0.21097839, z: 0.12019718}
     m_Extent: {x: 1.1727024, y: 2.5655246, z: 0.7217542}
   m_DirtyAABB: 0
+--- !u!114 &4228716428584776696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447158277978630560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6575104309439821016
 GameObject:
   m_ObjectHideFlags: 0
