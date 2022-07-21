@@ -1,0 +1,217 @@
+fileFormatVersion: 2
+guid: 251dc9433124fec41a3181f565b3a6ed
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena
+    second: {fileID: 2100000, guid: 932f87c4777751c4486aec9fbfdd9ee1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arena_2
+    second: {fileID: 2100000, guid: 6c1752f9dc06c2d41a9e824ee65b74f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _10_BROWN_DARK.003
+    second: {fileID: 2100000, guid: fd98de96e637b2741aeff7887452d591, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _11_BROWN_MEDIUM.003
+    second: {fileID: 2100000, guid: 7e068455d127d3d4b85d7f410509631a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _12_BROWN.001
+    second: {fileID: 2100000, guid: a6376b363db77744eb0bc13c35bfa679, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _13_BROWN_LIGHT.002
+    second: {fileID: 2100000, guid: 3c0e3f2ddb2ec79429395d6b23213b9a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _14_BROWN_LIGHTEST.003
+    second: {fileID: 2100000, guid: cf6910bfb1a113146b50e51d1e10f7c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _15_BROWN_WHITE.003
+    second: {fileID: 2100000, guid: c85a149b68f88634ea372e0d7b368dc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _17_GREY_DARKEST.003
+    second: {fileID: 2100000, guid: ab58076658e1e7e4aafe5f82bc7c2056, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _18_GREY_DARK.001
+    second: {fileID: 2100000, guid: ac70075933559a442b5e592996d03fab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _20_GREY.002
+    second: {fileID: 2100000, guid: 0221a15532eee284da1b4fa195ba24bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _21_GREY_LIGHT.001
+    second: {fileID: 2100000, guid: d493258e4d6c68f40ac624bba8ed1a68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _26_RED_DARK.003
+    second: {fileID: 2100000, guid: d14d87c7aab7d3245bf2e3758de714b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _28_ORANGE.003
+    second: {fileID: 2100000, guid: a231e28d555f2c74cad4df369673032f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _35_GREEN_MEDIUM.003
+    second: {fileID: 2100000, guid: 0834bae0bfbcc0b4d95a87d506e7cb9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _36_GREEN.001
+    second: {fileID: 2100000, guid: cd8b72412de9c1f49b778d3df03f9bcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _37_GREEN_LIGHT
+    second: {fileID: 2100000, guid: 4db79c7e839e55a44aa121d93d59183a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _39_GREEN_WHITE
+    second: {fileID: 2100000, guid: 3b6bfee762362ef47ac991c5691dbcc8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _46_BLUE_LIGHEST.003
+    second: {fileID: 2100000, guid: 4602d511e41d4aa488502938312f0ad5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _48_TRANSPARENT_BLUE.003
+    second: {fileID: 2100000, guid: e794d4b6d757fa24c83b551018239524, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _57_BLACK
+    second: {fileID: 2100000, guid: f6c48eec3f32de54dab3ceec8d69e809, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _61_EMISSION_ORANGE.002
+    second: {fileID: 2100000, guid: 294cc595b6ee1264890ddad28f38ad5f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _9_BROWN_DARKEST.003
+    second: {fileID: 2100000, guid: 601b3a98cc371b547861667f42a8f39c, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
