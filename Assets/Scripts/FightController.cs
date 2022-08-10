@@ -41,7 +41,8 @@ public class FightController : MonoBehaviour
     public int moneyPerLevel;
     public GameObject menuWin;
     public GameObject menuLoss;
-    public Text youEarned;
+    public GameObject youEarnedPanel;
+    public Text youEarnedText;
     private Camera _myCamera;
 
     public static UnityEvent levelStartEvent = new UnityEvent();
@@ -53,12 +54,14 @@ public class FightController : MonoBehaviour
         _myCamera = Camera.main;
         if (levelStartEvent != null)
             levelStartEvent.Invoke();
+        ADSController.ShowInterstitial();
     }
 
 
 
     public void StartFight ()
     {
+        
         GetComponent<AudioSource>().Play();
         Indicators[] allController = FindObjectsOfType<Indicators>();
         Transform uiRoot = FindObjectOfType<Canvas>().transform;
@@ -83,7 +86,11 @@ public class FightController : MonoBehaviour
 
         SaveAndLoad gameSave = GetComponent<SaveAndLoad>();        
         gameSave.SaveMySave();
-        GameObject.FindGameObjectWithTag("Box").SetActive(false);
+        ADSController.ShowInterstitial();
+        GameObject box = GameObject.FindGameObjectWithTag("Box");
+        if (box != null)
+            box.SetActive(false);
+        
     }
 
     public void BotDead (DamageBase bot)
@@ -178,11 +185,10 @@ public class FightController : MonoBehaviour
 
     void Winner ()
     {
-        
-
         MySceneManager.AddNextLevel();
         moneyPerLevel = (int)(Math.Max(MySceneManager.GetArrowmanCount(), MySceneManager.GetManCount()) * 2f);
         MySceneManager.AddMoney(moneyPerLevel);
+        MySceneManager.AddSecondMoney(1);
         StartCoroutine(YouEarned(true));
         GetComponent<AudioSource>().PlayOneShot(finishAudioClip);
         if (levelWinEvent != null)
@@ -209,25 +215,17 @@ public class FightController : MonoBehaviour
             {
                 bot.hpTransform.gameObject.SetActive(false);
             }
-
-        youEarned.text = Lineup.Convert(moneyPerLevel);
+        youEarnedText.text = Lineup.Convert(moneyPerLevel);        
         if (win)
             menuWin.SetActive(true);
         else
             menuLoss.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        youEarned.transform.parent.parent.gameObject.SetActive(true);
-        while(MyApplovinRewarded.rewardedAsLoaded)
-        {
-            youEarned.text = Lineup.Convert(moneyPerLevel*Roulette.rouletteCoeffisient);
-            yield return null;
-        }
+        yield return new WaitForSeconds(1f);
+        youEarnedPanel.SetActive(true);
     }
 
     public static float Distance (Transform start, Transform target)
     {
-        if (start == null | target == null)
-            return 0;
         float dist = (start.position - target.position).magnitude;
         return dist;
     }

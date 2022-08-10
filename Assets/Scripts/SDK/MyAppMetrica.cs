@@ -12,9 +12,15 @@ public class MyAppMetrica : MonoBehaviour
     {
         FightController.levelStartEvent.AddListener(StartLevel);
         FightController.levelWinEvent.AddListener(WinLevel);
-        ADSController.onStartAds.AddListener(VideoAdsStarted);
-        ADSController.onWatchAds.AddListener(VideoAdsWatch);
-        ADSController.onAvailableAds.AddListener(VideoAdsAvailable);
+        //ADSController.onStartAds.AddListener(VideoAdsStarted);
+        //ADSController.onWatchAds.AddListener(VideoAdsWatch);
+        //ADSController.onAvailableAds.AddListener(VideoAdsAvailable);
+        MyApplovinInterstitial.video_ads_available.AddListener(VideoAdsAvailable);
+        MyApplovinInterstitial.video_ads_started.AddListener(VideoAdsStarted);
+        MyApplovinInterstitial.video_ads_watch.AddListener(VideoAdsWatch);
+        MyApplovinRewarded.video_ads_available.AddListener(VideoAdsAvailable);
+        MyApplovinRewarded.video_ads_started.AddListener(VideoAdsStarted);
+        MyApplovinRewarded.video_ads_watch.AddListener(VideoAdsWatch);
     }
 
 
@@ -59,10 +65,10 @@ public class MyAppMetrica : MonoBehaviour
         parameters.Add("result", result);
         parameters.Add("connection", connection);
         AppMetrica.Instance.ReportEvent("video_ads_started", parameters);
-        print($"App_Metrica реклама старт {ad_type}, {placement}, {result}, {connection}" );
+        print($"App_Metrica реклама старт {ad_type}, {placement}, {result}, {connection}");
     }
 
-    
+
 
     public static void VideoAdsWatch(string ad_type, string placement, string result, int connection)
     {
@@ -72,6 +78,17 @@ public class MyAppMetrica : MonoBehaviour
         parameters.Add("result", result);
         parameters.Add("connection", connection);
         AppMetrica.Instance.ReportEvent("video_ads_watch", parameters);
+        print($"App_Metrica реклама финиш {ad_type}, {placement}, {result}, {connection}");
+    }
+
+    public static void ErrorAdsWatch(string ad_type, string placement, string result, int connection)
+    {
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+        parameters.Add("ad_type", ad_type);
+        parameters.Add("placement", placement);
+        parameters.Add("error", result);
+        parameters.Add("connection", connection);
+        AppMetrica.Instance.ReportEvent("video_ads_error", parameters);
         print($"App_Metrica реклама финиш {ad_type}, {placement}, {result}, {connection}");
     }
 }

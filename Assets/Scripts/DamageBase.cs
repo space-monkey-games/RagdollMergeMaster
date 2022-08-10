@@ -35,6 +35,7 @@ public class DamageBase : MonoBehaviour
 
     public Material deffaultMaterial;
     public int hp = 10;
+    private int maxHp;
     public int damage = 2;
     public float offcetForUI = 10f;
     public float distanceToAttack = 3f;
@@ -51,6 +52,7 @@ public class DamageBase : MonoBehaviour
     private Vector3 _currentForce;
     public static UnityEvent deadEvent = new UnityEvent();
     private AudioSource _audioSource;
+    private bool _isDead;
 
     private void Start()
     {
@@ -60,6 +62,7 @@ public class DamageBase : MonoBehaviour
         tr = transform;
         _fightController = FindObjectOfType<FightController>();
         _audioSource = FindObjectOfType<AudioSource>();
+        maxHp = hp;
     }    
 
     private void Update()
@@ -157,6 +160,8 @@ public class DamageBase : MonoBehaviour
 
     public void Damage(DamageParams _damageParams)
     {
+        if (_isDead)
+            return;
         if(damageParticle != null)
             damageParticle.Play();
         
@@ -164,6 +169,7 @@ public class DamageBase : MonoBehaviour
         if (hp <= 0)
         {
             Dead();
+            _isDead = true;
             return;
         }
         if(useActiveRagdol)
@@ -220,6 +226,12 @@ public class DamageBase : MonoBehaviour
         animator.SetTrigger("death");
         enabled = false;
         //Destroy(this);
+    }
+
+    public void Healing (int b)
+    {
+        int h = maxHp * b / 100;
+        hp += h;
     }
 }
 

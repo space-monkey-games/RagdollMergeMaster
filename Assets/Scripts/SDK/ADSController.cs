@@ -18,33 +18,84 @@ public class MyUnityEventClass : UnityEvent<string, string, string, int> { }
 
 public class ADSController : MonoBehaviour
 {
-    public float timerToAds = 45;
+    public struct userAttributes { }
+    public struct appAttributes { }
+
+    public static bool entryAdsButton;
+    public float timerToAds = 30;
+    private static float _timerToAds;
+    private static float _timeToLastAds;
     public GameObject noAdsButton;
-    private static float _timeToAds;
-    private Lineup _lineup;
+    public Lineup _lineup;
+    private static bool _showAds;
+    public static AdsType _adsType;
 
-    public static MyUnityEventClass onAvailableAds = new MyUnityEventClass();
-    public static MyUnityEventClass onStartAds = new MyUnityEventClass();
-    public static MyUnityEventClass onWatchAds = new MyUnityEventClass();
+    public void EntryAdsTrue()
+    {
+        entryAdsButton = true;
+    }
 
+    private void Awake()
+    {
+        //PullRemoteConfiguration();
+        /*
+        if (Time.unscaledTime < 10)
+        {
+            if (MySceneManager.GetLevel() > 3)
+                _showAds = true;
+            else
+                _showAds = false;
+        }*/
 
-    static MyApplovinInterstitial _applovinInterstitial;
-    static MyApplovinRewarded _applovinRewarded;
+        _timerToAds = timerToAds;
+        
+    }
+    /*
+    private void Update()
+    {
+        if (_showAds)
+            ShowInterstitial();
+    }
+    */
+    /*
+    void PullRemoteConfiguration ()
+    {
+        ConfigManager.FetchCompleted += ApplyConfig;
+        ConfigManager.FetchConfigs<userAttributes, appAttributes>(new userAttributes(), new appAttributes());
+    }
 
-    private AdsType _adsType;
+    void ApplyConfig(ConfigResponse configResponse)
+    {
+        switch(configResponse.requestOrigin)
+        {
+            case ConfigOrigin.Default:
+                timerToAds = 30;
+                break;
+            case ConfigOrigin.Cached:
+                break;
+            case ConfigOrigin.Remote:
+                SetSettings();
+                break;
+        }
+    }
 
+    void SetSettings ()
+    {
+        _timerToAds = ConfigManager.appConfig.GetFloat("timeReloadAds");
+    }
+    */
     private void Start()
     {
-        _applovinInterstitial = FindObjectOfType<MyApplovinInterstitial>();
-        _applovinRewarded = FindObjectOfType<MyApplovinRewarded>();
-        _lineup = FindObjectOfType<Lineup>();
+        //_applovinInterstitial = FindObjectOfType<MyApplovinInterstitial>();
+        //_applovinRewarded = FindObjectOfType<MyApplovinRewarded>();
+        
         if (PlayerPrefs.GetInt("noads", 0) == 1)
         {
             noAdsButton.SetActive(false);
             return;
         }
-        if (MySceneManager.GetLevel() > 3)
-            StartCoroutine(Timer());
+        //if (MySceneManager.GetLevel() > 3)
+        //    StartCoroutine(Timer());
     }
 
     public void OnRewardedShow (string type)
@@ -52,84 +103,69 @@ public class ADSController : MonoBehaviour
         switch (type)
         {
             case "man":
-                _adsType = AdsType.add_man;
+                //_adsType = AdsType.add_man;
+                MyApplovinRewarded.watchAds.AddListener(AddMan);
                 break;
             case "arrowman":
-                _adsType = AdsType.add_arrowman;
+                //_adsType = AdsType.add_arrowman;
+                MyApplovinRewarded.watchAds.AddListener(AddArrowman);
                 break;
             case "money":
-                _adsType = AdsType.add_money;
+                //_adsType = AdsType.add_money;
+                MyApplovinRewarded.watchAds.AddListener(AddMoney);
                 break;
             case "increase":
-                _adsType = AdsType.increase;
+                //_adsType = AdsType.increase;
+                MyApplovinRewarded.watchAds.AddListener(IncreaseMoney);
+                break;
+            case "rage":
+                MyApplovinRewarded.watchAds.AddListener(AddRage);
+                break;
+            case "freezing":
+                MyApplovinRewarded.watchAds.AddListener(AddFreezing);
+                break;
+            case "healing":
+                MyApplovinRewarded.watchAds.AddListener(AddHealing);
                 break;
         }
-        OnStartAds();
+        MyApplovinRewarded.Show();
     }
-
-    void OnStartAds ()
+    /*
+    private void OnRewardedShow()
     {
-        string b = "error";
-        if (_applovinRewarded.IsAdsReady())
-        {            
-            b = "success";
-        }
-        else
-            b = "not_available";
-        OnRewardedShow();
-        if (onAvailableAds != null)
-            onAvailableAds.Invoke("rewarded", _adsType.ToString(), b, Application.internetReachability.GetHashCode());
-
-    }
-
-    private void OnRewardedShow ()
-    {
-        _applovinRewarded.watchAds.RemoveAllListeners();
+        MyApplovinRewarded.watchAds.RemoveAllListeners();
         switch (_adsType)
         {
             case AdsType.add_man:
-                _applovinRewarded.watchAds.AddListener(AddMan);
+                MyApplovinRewarded.watchAds.AddListener(AddMan);
                 break;
             case AdsType.add_arrowman:
-                _applovinRewarded.watchAds.AddListener(AddArrowman);
+                MyApplovinRewarded.watchAds.AddListener(AddArrowman);
                 break;
             case AdsType.increase:
-                _applovinRewarded.watchAds.AddListener(IncreaseMoney);
+                MyApplovinRewarded.watchAds.AddListener(IncreaseMoney);
                 break;
             case AdsType.add_money:
-                _applovinRewarded.watchAds.AddListener(AddMoney);
+                MyApplovinRewarded.watchAds.AddListener(AddMoney);
                 break;
         }
+
+        MyApplovinRewarded.Show();      
         
-        _applovinRewarded.watchAds.AddListener(WatchRewarded);
-        _applovinRewarded.Show();
-        _timeToAds = 45;
-        if (onStartAds != null)
-            onStartAds.Invoke("rewarded", _adsType.ToString(), "start", Application.internetReachability.GetHashCode());
-    }
-
-    public static void OnInterstitialShow ()
-    {
-        _applovinInterstitial.Show();
-        _timeToAds = 45;
-        if (onStartAds != null)
-            onStartAds.Invoke("interstitial", "ad_on_replay", "start", Application.internetReachability.GetHashCode());
-    }
-
-    public void WatchRewarded ()
-    {
-        if (onWatchAds != null)
-            onWatchAds.Invoke("rewarded", _adsType.ToString(), "watched", Application.internetReachability.GetHashCode());
-    }
+    }*/
 
     void AddMan ()
     {
+        if (_lineup == null)
+            _lineup = FindObjectOfType<Lineup>();
         _lineup.AddNewManFree(true, 0);
         _lineup.AddNewManFree(true, 0);
     }
 
     void AddArrowman ()
     {
+        if (_lineup == null)
+            _lineup = FindObjectOfType<Lineup>();
         _lineup.AddNewManFree(false, 0);
         _lineup.AddNewManFree(false, 0);
     }
@@ -153,32 +189,56 @@ public class ADSController : MonoBehaviour
         {
             money = FindObjectOfType<FightController>().moneyPerLevel;
         }
-        money *= Roulette.rouletteCoeffisient;
+        money *= 4;//Roulette.rouletteCoeffisient;
         MySceneManager.AddMoney(money);
         FindObjectOfType<Lineup>().UpdateUI();
+    }
+
+    void AddRage()
+    {
+        MySceneManager.AddNextLevelRage();
+        if (TryGetComponent(out Rage hl))
+            hl.UpdateUI();
+    }
+
+    void AddHealing ()
+    {
+        MySceneManager.AddNextLevelHealing();
+        if (TryGetComponent(out Healing hl))
+            hl.UpdateUI();
+    }
+
+    void AddFreezing()
+    {
+        MySceneManager.AddNextLevelFreezing();
+        if (TryGetComponent(out Freezing hl))
+            hl.UpdateUI();
     }
 
     public void StopAds ()
     {
         PlayerPrefs.SetInt("noads", 1);
-        StopCoroutine(Timer());
+        //StopCoroutine(Timer());
         noAdsButton.SetActive(false);
     }
 
-    IEnumerator Timer ()
+    public static void ShowInterstitial ()
     {
-        while (true)
+        print(Time.unscaledTime - _timeToLastAds);
+        //if (_showAds == false)
+        //   return;
+        if ((Time.unscaledTime - _timeToLastAds) < _timerToAds)        
+            return;
+        if (MySceneManager.GetLevel() >= 3)
         {
-            if (_timeToAds > 0)
-                _timeToAds -= 1;
-            else
-            {
-                OnInterstitialShow();
-                _timeToAds = timerToAds;
-            }
-            yield return new WaitForSeconds(1.0f);
-            
+            MyApplovinInterstitial.Show();            
         }
+
+    }
+
+    public static void RestartInterstitial ()
+    {
+        _timeToLastAds = Time.unscaledTime;
     }
 
 }

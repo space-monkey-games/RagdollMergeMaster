@@ -17,7 +17,6 @@ public class RateUs : MonoBehaviour
     private void Start()
     {
         lastTime = Time.time;
-        print(lastTime);
         if (lastTime >= nextTime)
         {
             transform.GetChild(0).gameObject.SetActive(true);

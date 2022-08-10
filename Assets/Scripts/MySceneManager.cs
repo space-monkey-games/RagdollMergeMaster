@@ -19,8 +19,8 @@ public class MySceneManager : MonoBehaviour
             return;
         }
 
-        currentLevelText.text = "LEVEL " + (GetLevelCount()+1).ToString();
-        SaveAndLoad gameSave = GetComponent<SaveAndLoad>();        
+        currentLevelText.text = "LEVEL " + (GetLevelCount() + 1).ToString();
+        SaveAndLoad gameSave = GetComponent<SaveAndLoad>();
         gameSave.fileName = GetLevel().ToString();
         gameSave.LoadLevel();
         if (allLevels.Length > 0)
@@ -29,7 +29,7 @@ public class MySceneManager : MonoBehaviour
         if (isEditMode)
             return;
         gameSave.LoadPlayerSave();
-        
+
     }
 
     void SetLevelBackground()
@@ -48,6 +48,7 @@ public class MySceneManager : MonoBehaviour
         }
 
     }
+
 
     /*
     private AsyncOperation nextScene;
@@ -119,20 +120,13 @@ public class MySceneManager : MonoBehaviour
         SceneManager.LoadScene(i);
     }
 
-    public static void AddPreviousLevel()
-    {
-        int l = GetLevel();
-        l--;
-        l = Mathf.Clamp(l, 0, 85);
-        PlayerPrefs.SetInt("level", l);
-    }
 
     public static void AddNextLevel ()
     {
         int l = GetLevel();
         l++;
         if (l > 85)
-            l = 25;        
+            l = 50;        
         AddNextLevelCount();
         PlayerPrefs.SetInt("level", l);
     }
@@ -146,7 +140,6 @@ public class MySceneManager : MonoBehaviour
 
     public static void AddMoney (int money)
     {
-        print("Add money " + money);
         int m = GetMoney() + money;
         PlayerPrefs.SetInt("money", m);
     }
@@ -159,8 +152,65 @@ public class MySceneManager : MonoBehaviour
     // TEST 10000 MONEY
     public static int GetMoney ()
     {
-        int money = PlayerPrefs.GetInt("money", 30);
+        int money = PlayerPrefs.GetInt("money", 30000000);
         return money;
+    }
+
+    public static void AddSecondMoney(int money)
+    {
+        int m = GetSecondMoney() + money;
+        m = Mathf.Max(0, m);
+        PlayerPrefs.SetInt("secondmoney", m);
+    }
+
+    public static void SetSecondMoney(int m)
+    {
+        PlayerPrefs.SetInt("secondmoney", m);
+    }
+
+    public static int GetSecondMoney()
+    {
+        int money = PlayerPrefs.GetInt("secondmoney", 1);
+        return money;
+    }
+
+    public static int GetRageLevel ()
+    {
+        int r = PlayerPrefs.GetInt("rage", 1);
+        return r;
+    }
+
+    public static void AddNextLevelRage ()
+    {
+        int r = GetRageLevel();
+        r++;
+        PlayerPrefs.SetInt("rage", r);
+    }
+
+    public static int GetHealingLevel()
+    {
+        int r = PlayerPrefs.GetInt("healing", 1);
+        return r;
+    }
+
+    public static void AddNextLevelHealing()
+    {
+        int r = GetHealingLevel();
+        r++;
+        PlayerPrefs.SetInt("healing", r);
+    }
+
+    public static int GetFreezingLevel()
+    {
+        int r = PlayerPrefs.GetInt("freezing", 1);
+        return r;
+    }
+
+    public static void AddNextLevelFreezing()
+    {
+        int r = GetFreezingLevel();
+        r++;
+        PlayerPrefs.SetInt("freezing", r);
     }
 
     public static int GetLevel ()
@@ -173,7 +223,7 @@ public class MySceneManager : MonoBehaviour
     public void SetLevel ()
     {        
         SaveAndLoad gameSave = GetComponent<SaveAndLoad>();
-        gameSave.fileName = gameSave.fileName;        
+        //gameSave.fileName = gameSave.fileName;        
         gameSave.LoadLevel();
     }
 
@@ -214,7 +264,7 @@ public class MySceneManager : MonoBehaviour
 
     public static void ResetMoney ()
     {
-        PlayerPrefs.DeleteKey("money");
+        PlayerPrefs.SetInt("money", 30);
     }
 
     [ContextMenu("ResetLevel")]
@@ -222,11 +272,8 @@ public class MySceneManager : MonoBehaviour
 
     public static void ResetLevel ()
     {
-        PlayerPrefs.DeleteKey("level");
+        PlayerPrefs.SetInt("level", 1);
         PlayerPrefs.DeleteKey("levelCount");
-        PlayerPrefs.DeleteKey("lastopenman");
-        PlayerPrefs.DeleteKey("lastopenarrowman");
-        PlayerPrefs.DeleteKey("rateus");
     }
 
     public static void ResetBotCount ()

@@ -13,7 +13,10 @@ public class Lineup : MonoBehaviour
     public AudioClip mergeAudioClip;
     private AudioSource _audioSource;
     public Material blueMaterial;
+    public Material greenMaterial;
     public Material redMaterial;
+    public Material orangeMaterial;
+    public Material grayMaterial;
     public GameObject hpBarBlue;
     public GameObject hpBarRed;
     public GameObject freeAddManButton;
@@ -40,7 +43,7 @@ public class Lineup : MonoBehaviour
     private Vector3 _startCell;
     public static UnityEvent mergeEvent = new UnityEvent();
 
-    
+
     void Start()
     {
         _myCamera = Camera.main;
@@ -65,20 +68,18 @@ public class Lineup : MonoBehaviour
         if (Input.GetMouseButton(0) && _target != null)
         {
             Vector3 newPos = RaycastPosition(Input.mousePosition);
-            _target.position = newPos;            
+            _target.position = newPos;
         }
         if (Input.GetMouseButtonUp(0) && _target != null)
-        {
-            SetColorLine(Color.black);
+        {            
             _currentCell = CheckCell(RaycastPosition(Input.mousePosition));
             _currentCell = ClampCell(_currentCell);
-            
             SetPositionOnCell();
-            currentPlayers.Clear();
+            ClearLine();
         }
     }
 
-    Vector3 RaycastPosition (Vector3 inputPosition)
+    Vector3 RaycastPosition(Vector3 inputPosition)
     {
         Vector3 newPos = Vector3.zero;
         Ray ray = _myCamera.ScreenPointToRay(inputPosition);
@@ -97,10 +98,10 @@ public class Lineup : MonoBehaviour
         return newPos;
     }
 
-    Vector3 CheckCell (Vector3 inputPosition)
+    Vector3 CheckCell(Vector3 inputPosition)
     {
-        Vector3 newPos = new Vector3((Mathf.RoundToInt((inputPosition.x + offcetPosition.x) / cellSize.x))*cellSize.x, 0, (Mathf.RoundToInt((inputPosition.z + offcetPosition.y) / cellSize.y))* cellSize.y);
-        
+        Vector3 newPos = new Vector3((Mathf.RoundToInt((inputPosition.x + offcetPosition.x) / cellSize.x)) * cellSize.x, 0, (Mathf.RoundToInt((inputPosition.z + offcetPosition.y) / cellSize.y)) * cellSize.y);
+
         return newPos;
     }
 
@@ -110,15 +111,15 @@ public class Lineup : MonoBehaviour
         return newPos;
     }
 
-    Vector3 GetCellByNumber (Vector2 num)
+    Vector3 GetCellByNumber(Vector2 num)
     {
-        return new Vector3(cellSize.x*num.x + offcetPosition.x, 0, cellSize.y * num.y + offcetPosition.y);
+        return new Vector3(cellSize.x * num.x + offcetPosition.x, 0, cellSize.y * num.y + offcetPosition.y);
     }
 
-    Transform  CheckTarget (Vector3 pos)
+    Transform CheckTarget(Vector3 pos)
     {
         Transform _trg = null;
-        Collider[] allColl = Physics.OverlapSphere(pos, cellSize.x/2, layerPlayer);
+        Collider[] allColl = Physics.OverlapSphere(pos, cellSize.x / 2, layerPlayer);
         foreach (Collider col in allColl)
         {
             if (col.CompareTag("Player"))
@@ -130,30 +131,35 @@ public class Lineup : MonoBehaviour
         return _trg;
     }
 
-    public List<GameObject> currentPlayers = new List<GameObject>();
+    public GameObject[] currentPlayers = new GameObject[0];
     void AddLine(Transform tr)
     {
         if (tr == null)
             return;
-        currentPlayers = new List<GameObject>();
         Indicators indicators = tr.GetComponent<Indicators>();
-        GameObject[] allGo = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject go in allGo)
+        currentPlayers = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject go in currentPlayers)
         {
             Indicators i = go.GetComponentInChildren<Indicators>();
+            Outline outline = go.GetComponentInChildren<Outline>();
             if (i.typeMan == indicators.typeMan && i.level == indicators.level)
             {
-                currentPlayers.Add(go);
+                outline.OutlineColor = Color.green;
+            }
+            else
+            {
+                outline.SetMaterial(grayMaterial);
             }
         }
-        SetColorLine(Color.green);
     }
 
-    void SetColorLine (Color currentColor)
+    void ClearLine ()
     {
-        foreach(GameObject go in currentPlayers)
+        foreach (GameObject go in currentPlayers)
         {
-            go.GetComponentInChildren<Outline>().OutlineColor = currentColor;
+            Outline outline = go.GetComponentInChildren<Outline>();
+            outline.SetStartMaterial();
+            outline.OutlineColor = Color.black;
         }
     }
 
@@ -161,7 +167,7 @@ public class Lineup : MonoBehaviour
     {
         Transform trInCell = CheckTarget(_currentCell);
         if (trInCell != null)
-            Merger(trInCell, _target);        
+            Merger(trInCell, _target);
         else
             _target.position = _currentCell;
 
@@ -169,19 +175,19 @@ public class Lineup : MonoBehaviour
         _target = null;
     }
 
-    int getLevel (GameObject go)
+    int getLevel(GameObject go)
     {
         int level = 0;
         level = go.GetComponentInChildren<Indicators>().level;
         return level;
     }
 
-    TypeMan GetTypeMan (GameObject go)
+    TypeMan GetTypeMan(GameObject go)
     {
         return go.GetComponentInChildren<Indicators>().typeMan;
     }
 
-    void Merger (Transform trInCell, Transform tr)
+    void Merger(Transform trInCell, Transform tr)
     {
         if (GetTypeMan(trInCell.gameObject) != GetTypeMan(tr.gameObject))
         {
@@ -193,29 +199,32 @@ public class Lineup : MonoBehaviour
         if (a == b && a < 12)
         {
             RemoveGameObject(trInCell.root.gameObject);
-            RemoveGameObject(tr.root.gameObject);            
-            InstantiateLevelMan(GetTypeMan(trInCell.gameObject), a+1, trInCell.position, true);            
+            RemoveGameObject(tr.root.gameObject);
+            InstantiateLevelMan(GetTypeMan(trInCell.gameObject), a + 1, trInCell.position, true);
         }
         else
             ReturnStartCell(trInCell, tr);
+        ADSController.ShowInterstitial();
     }
 
     void ReturnStartCell(Transform trInCell, Transform tr)
     {
         //Vector3 pos = trInCell.position;
-        
+
         tr.position = trInCell.position;
         trInCell.position = _startCell;
         //_target.position = _startCell;
     }
 
-    public void InstantiateLevelMan (TypeMan typeMan, int currentLevel, Vector3 newPos, bool isPlayer)
+    public void InstantiateLevelMan(TypeMan typeMan, int currentLevel, Vector3 newPos, bool isPlayer)
     {
+        if (isPlayer == false)
+            newPos += new Vector3(0, 0, 25);
         GameObject go = null;
         if (typeMan == TypeMan.man)
         {
             go = Instantiate(allMan[currentLevel], newPos, Quaternion.identity);
-            if(!go.activeSelf)
+            if (!go.activeSelf)
                 go.SetActive(true);
         }
         else
@@ -235,19 +244,26 @@ public class Lineup : MonoBehaviour
         }
         if (isPlayer)
         {
-            go.GetComponentInChildren<Indicators>().gameObject.tag = "Player";
-            go.GetComponentInChildren<SkinnedMeshRenderer>().material = blueMaterial;
+            go.GetComponentInChildren<Indicators>().gameObject.tag = "Player";            
             go.GetComponentInChildren<DamageBase>().hpBar = Instantiate(hpBarBlue);
-
+            if (typeMan == TypeMan.man)
+                go.GetComponentInChildren<SkinnedMeshRenderer>().material = blueMaterial;
+            else
+                go.GetComponentInChildren<SkinnedMeshRenderer>().material = greenMaterial;
             if (mergeEvent != null)
                 mergeEvent.Invoke();
         }
         else
         {
-            go.GetComponentInChildren<Indicators>().gameObject.tag = "Untagged";
+            go.GetComponentInChildren<Indicators>().gameObject.tag = "Enemy";
             go.transform.rotation = Quaternion.Euler(0, 180, 0);
             if (typeMan != TypeMan.boss)
-                go.GetComponentInChildren<SkinnedMeshRenderer>().material = redMaterial;
+            {
+                if (typeMan == TypeMan.man)
+                    go.GetComponentInChildren<SkinnedMeshRenderer>().material = redMaterial;
+                else
+                    go.GetComponentInChildren<SkinnedMeshRenderer>().material = orangeMaterial;
+            }
             go.GetComponentInChildren<DamageBase>().hpBar = Instantiate(hpBarRed);
         }
         if (_audioSource == null)
@@ -255,6 +271,7 @@ public class Lineup : MonoBehaviour
         mergeParticle.transform.position = newPos;
         mergeParticle.Play();
         _audioSource.PlayOneShot(mergeAudioClip);
+        
     }
 
     public void AddNewManFree(bool isMan, int level)
@@ -270,9 +287,9 @@ public class Lineup : MonoBehaviour
     public void AddNewMan(bool isMan)
     {
         Vector3 newPos = Vector3.zero;
-        for (int i = 1; i < gridSize.y+1; i++)
+        for (int i = 1; i < gridSize.y + 1; i++)
         {
-            for (int o = 1; o < gridSize.x+1; o++)
+            for (int o = 1; o < gridSize.x + 1; o++)
             {
                 Vector2 num = new Vector2(o, i);
                 Transform tar = CheckTarget(GetCellByNumber(num));
@@ -293,7 +310,7 @@ public class Lineup : MonoBehaviour
                 return;
             InstantiateLevelMan(TypeMan.man, 0, newPos, true);
             MySceneManager.AddMoney(-manCount);
-            manCount += Mathf.CeilToInt(manCount*coefficient/100);
+            manCount += Mathf.CeilToInt(manCount * coefficient / 100);
             MySceneManager.SetManCount(manCount);
         }
         else
@@ -347,14 +364,15 @@ public class Lineup : MonoBehaviour
             MySceneManager.SetArrowmanCount(arrowmanCount);
         }
         UpdateUI();
+        
     }
 
     void RemoveGameObject(GameObject go)
     {
         Destroy(go);
-    }    
+    }
 
-    public void UpdateUI ()
+    public void UpdateUI()
     {
         manCount = MySceneManager.GetManCount();
         arrowmanCount = MySceneManager.GetArrowmanCount();
@@ -378,7 +396,6 @@ public class Lineup : MonoBehaviour
     {
         freeAddManButton.SetActive(true);        
     }
-
     void EnabledFreeArrowman()
     {
         freeAddArrowmanButton.SetActive(true);
@@ -386,7 +403,7 @@ public class Lineup : MonoBehaviour
     */
     public static string Convert(int count)
     {
-        char[] allLetters = new char[] { ' ', 'K', 'M', 'B', 'T', 'Q', 'S', 'O', 'N', 'D', 'U', 'F', 'A', 'C', 'G', 'L', 'P', 'R', 'X', 'Y', 'Z'};
+        char[] allLetters = new char[] { ' ', 'K', 'M', 'B', 'T', 'Q', 'S', 'O', 'N', 'D', 'U', 'F', 'A', 'C', 'G', 'L', 'P', 'R', 'X', 'Y', 'Z' };
         string c = count.ToString();
         int i = 0;
         for (; c.Length > 3; i++)

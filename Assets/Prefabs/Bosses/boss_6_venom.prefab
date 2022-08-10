@@ -170,7 +170,7 @@ MonoBehaviour:
   hp: 8000
   damage: 750
   offcetForUI: 5
-  distanceToAttack: 10
+  distanceToAttack: 20
   forceForRB: 1250
   forceForMove: 9
   attackRate: 1

@@ -97,8 +97,11 @@ public class Outline : MonoBehaviour {
 
     // Apply material properties immediately
     needsUpdate = true;
-  }
+        
+    }
 
+    private Material startMaterial;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
   void OnEnable() {
     foreach (var renderer in renderers) {
 
@@ -110,7 +113,31 @@ public class Outline : MonoBehaviour {
 
       renderer.materials = materials.ToArray();
     }
+        
+        
   }
+
+
+    public void GetStartMaterial ()
+    {
+        skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        if (startMaterial == null)
+            startMaterial = skinnedMeshRenderer.material;
+    }
+
+    public void SetMaterial(Material m)
+    {
+        if (startMaterial == null)
+            GetStartMaterial();
+        skinnedMeshRenderer.material = m;
+    }
+
+    public void SetStartMaterial ()
+    {
+        if (startMaterial == null)
+            GetStartMaterial();
+        skinnedMeshRenderer.material = startMaterial;
+    }
 
   void OnValidate() {
 
@@ -274,4 +301,6 @@ public class Outline : MonoBehaviour {
         break;
     }
   }
+
+
 }

@@ -26,7 +26,6 @@ public class Roulette : MonoBehaviour
     private void Update()
     {
         int i = (int)Mathf.Abs(tr.localRotation.z*10);
-        print(i);
         switch(i)
         {
             case 10:

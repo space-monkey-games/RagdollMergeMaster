@@ -5,9 +5,15 @@ using UnityEngine.Events;
 
 public class MyApplovinRewarded : MonoBehaviour
 {
-    string adUnitId = "86a78a0486613e48";
+    static string adUnitId = "86a78a0486613e48";
     int retryAttempt;
-    public UnityEvent watchAds = new UnityEvent();
+    public static UnityEvent watchAds = new UnityEvent();
+
+    public static MyUnityEventClass video_ads_watch = new MyUnityEventClass();
+    public static MyUnityEventClass video_ads_started = new MyUnityEventClass();
+    public static MyUnityEventClass video_ads_available = new MyUnityEventClass();
+    public static MyUnityEventClass errorLoadAds = new MyUnityEventClass();
+
     public static bool rewardedAsLoaded = false;
 
     // Start is called before the first frame update
@@ -27,23 +33,26 @@ public class MyApplovinRewarded : MonoBehaviour
         LoadRewardedAd();
     }
 
-    public void LoadRewardedAd()
+    public static void LoadRewardedAd()
     {
         rewardedAsLoaded = false;
         MaxSdk.LoadRewardedAd(adUnitId);
     }
 
-    public bool IsAdsReady()
+    public static void Show ()
     {
-        return MaxSdk.IsRewardedAdReady(adUnitId);
-    }
-
-    public void Show ()
-    {
-        if (IsAdsReady())
+        string sucsess = "not_available";
+        if (MaxSdk.IsRewardedAdReady(adUnitId))
+        {
             MaxSdk.ShowRewardedAd(adUnitId);
+            sucsess = "success";
+            if (video_ads_started != null)
+                video_ads_started.Invoke("rewarded", ADSController._adsType.ToString(), sucsess, Application.internetReachability.GetHashCode());
+        }
         else
             LoadRewardedAd();
+        if (video_ads_available != null)
+            video_ads_available.Invoke("rewarded", ADSController._adsType.ToString(), sucsess, Application.internetReachability.GetHashCode());
     }
 
     private void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
@@ -64,26 +73,33 @@ public class MyApplovinRewarded : MonoBehaviour
         double retryDelay = Mathf.Pow(2, Mathf.Min(6, retryAttempt));
 
         Invoke("LoadRewardedAd", (float)retryDelay);
+        ADSController.RestartInterstitial();
     }
 
     private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         LoadRewardedAd();
+        ADSController.RestartInterstitial();
     }
 
     private void OnRewardedAdFailedToDisplayEvent(string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo)
     {
         // Rewarded ad failed to display. AppLovin recommends that you load the next ad.
         LoadRewardedAd();
+        ADSController.RestartInterstitial();
     }
 
-    private void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo) { }
+    private void OnRewardedAdClickedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+    {
+        if (video_ads_watch != null)
+            video_ads_watch.Invoke("rewarded", ADSController._adsType.ToString(), "clicked", Application.internetReachability.GetHashCode());
+    }
 
     private void OnRewardedAdHiddenEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
         //Rewarded ad is hidden. Pre-load the next ad
         LoadRewardedAd();
-
+        ADSController.RestartInterstitial();
     }
 
     private void OnRewardedAdReceivedRewardEvent(string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo)
@@ -91,13 +107,17 @@ public class MyApplovinRewarded : MonoBehaviour
         if (watchAds != null)
         {
             watchAds.Invoke();
-            watchAds.RemoveAllListeners();
         }
+        if (video_ads_watch != null)
+            video_ads_watch.Invoke("rewarded", ADSController._adsType.ToString(), "watched", Application.internetReachability.GetHashCode());
+
+        ADSController.RestartInterstitial();
     }
 
     private void OnRewardedAdRevenuePaidEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
     {
 
+        ADSController.RestartInterstitial();
         // Ad revenue paid. Use this callback to track user revenue.
 
         // Update is called once per frame
